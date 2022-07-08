@@ -1,0 +1,15 @@
+
+Rest-api sequence
+1° model
+2° datasource
+3° resources -> application.yml
+4° database
+5° resources -> db.migration.V1__New_table.sql
+6° controller
+7° service
+8° dao
+
+
+Download the postgres database using Docker
+Small version, recommend to development using a desktop
+docker run --name spring-postgres-beskar -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres:alpine

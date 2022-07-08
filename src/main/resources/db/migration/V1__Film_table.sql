@@ -1,0 +1,6 @@
+CREATE TABLE film (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    release VARCHAR NOT NULL,
+    director VARCHAR NOT NULL
+);
