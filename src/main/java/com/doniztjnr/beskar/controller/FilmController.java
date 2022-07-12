@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/film")
+@RequestMapping(path = "/api/film")
 public class FilmController {
 
     private final FilmService filmService;
@@ -39,19 +39,19 @@ public class FilmController {
     }
 
     // UPDATE
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "/{id}")
     public void updateFilm(@Valid @NonNull @RequestBody Film film, @PathVariable(value = "id") Long id) {
         filmService.updateFilm(film, id);
     }
 
     // DELETE
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteFilm(@PathVariable(value = "id") Long id) {
         filmService.deleteFilm(id);
     }
 
     // READ BY ID
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/{id}")
     public Film getFilm(@PathVariable(value = "id") Long id) {
         return filmService.getFilm(id);
     }
