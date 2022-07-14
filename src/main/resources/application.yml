@@ -1,6 +1,0 @@
-app:
-  # Database
-  datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/beskar
-    username: postgres
-    password: password
