@@ -8,6 +8,5 @@ package com.doniztjnr.film;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FilmRepository extends JpaRepository<Film, Long> {
-
-    Film findByName(String name);
+    Film findByName(String filmName);
 }
