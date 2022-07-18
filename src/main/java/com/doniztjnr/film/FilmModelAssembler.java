@@ -22,24 +22,16 @@ public class FilmModelAssembler implements RepresentationModelAssembler<Film, En
     @Override
     public EntityModel<Film> toModel(Film film) {
         return EntityModel.of(film,
-                linkTo(methodOn(FilmController.class)
-                        .one(film.getId()))
-                        .withSelfRel(),
-
-                linkTo(methodOn(FilmController.class)
-                        .all())
-                        .withRel("films"));
+                linkTo(methodOn(FilmController.class).one(film.getId())).withSelfRel(),
+                linkTo(methodOn(FilmController.class).all()).withRel("films"));
     }
 
     @Override
     public CollectionModel<EntityModel<Film>> toCollectionModel(Iterable<? extends Film> entities) {
         CollectionModel<EntityModel<Film>> collectionModel =  RepresentationModelAssembler
-                .super
-                .toCollectionModel(entities);
+                .super.toCollectionModel(entities);
 
         return collectionModel
-                .add(linkTo(methodOn(FilmController.class)
-                        .all())
-                        .withSelfRel());
+                .add(linkTo(methodOn(FilmController.class).all()).withSelfRel());
     }
 }

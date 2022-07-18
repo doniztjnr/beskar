@@ -10,6 +10,7 @@ package com.doniztjnr.film;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,38 +19,50 @@ import org.springframework.web.bind.annotation.*;
 public class FilmController {
 
     private final FilmService service;
+    private final FilmModelAssembler assembler;
 
-    public FilmController(FilmService service) {
+    public FilmController(FilmService service, FilmModelAssembler assembler) {
         this.service = service;
+        this.assembler = assembler;
     }
 
     // CREATE
     @PostMapping(path = "/films")
     ResponseEntity<?> newtFilm(@RequestBody Film newFilm) {
-        return service.insertNewFilm(newFilm);
+        EntityModel<Film> entityModel = assembler.toModel(service.insertNewFilm(newFilm));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     // READ
     @GetMapping(path = "/films")
     CollectionModel<EntityModel<Film>> all() {
-        return service.displayAllFilms();
+        return assembler.toCollectionModel(service.displayAllFilms());
     }
 
     // READ BY ID
     @GetMapping(path = "/films/{id}")
     EntityModel<Film> one(@PathVariable Long id) {
-        return service.displayOneFilmById(id);
+        return assembler.toModel(service.displayOneFilmById(id));
     }
 
     // UPDATE BY ID
     @PutMapping(path = "/films/{id}")
     ResponseEntity<?> replaceFilm(@RequestBody Film newFilm, @PathVariable Long id) {
-        return service.changeOneFilmById(newFilm, id);
+        EntityModel<Film> entityModel = assembler.toModel(service.changeOneFilmById(newFilm, id));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     // DELETE BY ID
     @DeleteMapping(path = "/films/{id}")
     ResponseEntity<?> deleteFilm(@PathVariable Long id) {
-        return service.deleteOneFilmById(id);
+        service.deleteOneFilmById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
