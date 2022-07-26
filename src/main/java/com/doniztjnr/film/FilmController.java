@@ -29,7 +29,7 @@ public class FilmController {
     // CREATE
     @PostMapping(path = "/films")
     ResponseEntity<?> newtFilm(@RequestBody Film newFilm) {
-        EntityModel<Film> entityModel = assembler.toModel(service.insertNewFilm(newFilm));
+        EntityModel<FilmDTO> entityModel = assembler.toModel(service.insertNewFilm(newFilm));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
@@ -38,20 +38,20 @@ public class FilmController {
 
     // READ
     @GetMapping(path = "/films")
-    CollectionModel<EntityModel<Film>> all() {
+    CollectionModel<EntityModel<FilmDTO>> all() {
         return assembler.toCollectionModel(service.displayAllFilms());
     }
 
     // READ BY ID
     @GetMapping(path = "/films/{id}")
-    EntityModel<Film> one(@PathVariable Long id) {
+    EntityModel<FilmDTO> one(@PathVariable Long id) {
         return assembler.toModel(service.displayOneFilmById(id));
     }
 
     // UPDATE BY ID
     @PutMapping(path = "/films/{id}")
     ResponseEntity<?> replaceFilm(@RequestBody Film newFilm, @PathVariable Long id) {
-        EntityModel<Film> entityModel = assembler.toModel(service.changeOneFilmById(newFilm, id));
+        EntityModel<FilmDTO> entityModel = assembler.toModel(service.changeOneFilmById(newFilm, id));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())

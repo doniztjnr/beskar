@@ -68,8 +68,7 @@ public class Film {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Film)) return false;
-        Film film = (Film) o;
+        if (!(o instanceof Film film)) return false;
         return Objects.equals(id, film.id)
                 && Objects.equals(name, film.name)
                 && Objects.equals(release, film.release)

@@ -9,5 +9,4 @@ public class BeskarApplication {
     public static void main(String[] args) {
         SpringApplication.run(BeskarApplication.class, args);
     }
-
 }

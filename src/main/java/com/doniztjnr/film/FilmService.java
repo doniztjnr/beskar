@@ -7,6 +7,7 @@ package com.doniztjnr.film;
  * from @RestController class file.
  * */
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,28 +21,37 @@ public class FilmService {
         this.repository = repository;
     }
 
-    Film insertNewFilm(Film newFilm) {
-        return repository.save(newFilm);
+    FilmDTO insertNewFilm(Film newFilm) {
+        Film film = repository.save(newFilm);
+        return new FilmDTO(film);
     }
 
-    List<Film> displayAllFilms() {
-        return repository.findAll();
+    List<FilmDTO> displayAllFilms() {
+        List<Film> films = repository.findAll();
+        ModelMapper modelMapper = new ModelMapper();
+        return films.stream()
+                .map(film -> modelMapper.map(film, FilmDTO.class))
+                .toList();
     }
 
-    Film displayOneFilmById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new FilmNotFoundException(id));
+    FilmDTO displayOneFilmById(Long id) {
+        Film film = repository.findById(id)
+                .orElseThrow(() -> new FilmNotFoundException(id));
+        return new FilmDTO(film);
     }
 
-    Film changeOneFilmById(Film newFilm, Long id) {
-        return repository.findById(id).map(film -> {
-            film.setName(newFilm.getName());
-            film.setRelease(newFilm.getRelease());
-            film.setDirector(newFilm.getDirector());
-            return repository.save(film);
-        }).orElseGet(() -> {
-            newFilm.setId(id);
-            return repository.save(newFilm);
-        });
+    FilmDTO changeOneFilmById(Film newFilm, Long id) {
+        Film filmUp = repository.findById(id)
+                .map(film -> {
+                    film.setName(newFilm.getName());
+                    film.setRelease(newFilm.getRelease());
+                    film.setDirector(newFilm.getDirector());
+                    return repository.save(film);
+                }).orElseGet(() -> {
+                    newFilm.setId(id);
+                    return repository.save(newFilm);
+                });
+        return new FilmDTO(filmUp);
     }
 
     void deleteOneFilmById(Long id) {
